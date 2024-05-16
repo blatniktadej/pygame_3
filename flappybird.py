@@ -10,7 +10,7 @@ bg_color=(0,0,0)
 pygame.display.set_caption("Flappy bird")
 def jump():
     global ball_speed
-    ball_speed=JUMP_SPEED
+    ball_speed=ball_space
 #OVIRA
 ovira_sirina=100
 ovira_dolzina=300
@@ -33,6 +33,7 @@ ovira_x=width
 ovira_gap=200
 ovira_y=random.randint(ovira_gap,height-ovira_gap)
 
+clock=pygame.time.Clock()
 while True:
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
@@ -41,3 +42,6 @@ while True:
         elif event.type==pygame.KEYDOWN:
             if event.key==pygame.K_SPACE:
                 jump()
+    ball_speed-=ball_gravity
+    ball_position[1]-=ball_speed
+    pygame.draw.circle(screen,ball_color,(ball_position[0],int(ball_position[1])),ball_radius)
