@@ -19,7 +19,7 @@ ovira_speed=5
 #ŽOGA
 ball_radius=10
 ball_color=(255,0,0)
-ball_zac_poz=(600,300)
+ball_zac_poz=(width//4,height//2)
 ball_gravity=0.3
 ball_space=10
 
@@ -35,6 +35,7 @@ ovira_y=random.randint(ovira_gap,height-ovira_gap)
 
 clock=pygame.time.Clock()
 while True:
+    screen.fill(bg_color)
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             pygame.quit()
@@ -45,3 +46,20 @@ while True:
     ball_speed-=ball_gravity
     ball_position[1]-=ball_speed
     pygame.draw.circle(screen,ball_color,(ball_position[0],int(ball_position[1])),ball_radius)
+
+    #premikanje ovire
+    ovira_x-=ovira_speed
+    if ovira_x<ovira_sirina:
+        ovira_x=width
+        ovira_gap=random.randint(150,400)
+        ovira_y=random.randint(ovira_gap,width-ovira_gap)
+    pygame.draw.rect(screen,ovira_barva,(ovira_x,0,ovira_sirina,ovira_y-ovira_gap//2))
+    pygame.draw.rect(screen,ovira_barva,(ovira_x,ovira_y+ovira_gap//2,ovira_sirina,height-ovira_y//2))
+
+    #detekcija trčenja
+    if (ball_position[0]+ball_radius>= ovira_x and ball_position[0] - ball_radius<=ovira_x+ovira_sirina and
+            (ball_position[1]-ball_radius<=ovira_y-ovira_gap//2 or ball_position[1]+ball_radius>=ovira_y+ovira_gap//2)):
+        exit()
+
+    pygame.display.update()
+    clock.tick(60)
